@@ -20,13 +20,13 @@ export default class TransactionScreen extends Component {
     this.state = {
       bookId: "",
       studentId: "",
-      domState: "normal",
+      buttonState: "normal",
       hasCameraPermissions: null,
       scanned: false
     };
   }
 
-  getCameraPermissions = async domState => {
+  getCameraPermissions = async buttonState => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
 
     this.setState({
@@ -34,7 +34,7 @@ export default class TransactionScreen extends Component {
           status === "granted" is false when user has not granted the permission
         */
       hasCameraPermissions: status === "granted",
-      domState: domState,
+      buttonState: buttonState,
       scanned: false
     });
   };
@@ -42,19 +42,7 @@ export default class TransactionScreen extends Component {
   handleBarCodeScanned = async ({ type, data }) => {
     const { domState } = this.state;
 
-    if (domState === "bookId") {
-      this.setState({
-        bookId: data,
-        domState: "normal",
-        scanned: true
-      });
-    } else if (domState === "studentId") {
-      this.setState({
-        studentId: data,
-        domState: "normal",
-        scanned: true
-      });
-    }
+   
   };
 
   render() {
@@ -69,39 +57,14 @@ export default class TransactionScreen extends Component {
     }
     return (
       <View style={styles.container}>
-        <ImageBackground source={bgImage} style={styles.bgImage}>
-          
-          <View style={styles.lowerContainer}>
-            <View style={styles.textinputContainer}>
-              <TextInput
-                style={styles.textinput}
-                placeholder={"Book Id"}
-                placeholderTextColor={"#FFFFFF"}
-                value={bookId}
-              />
-              <TouchableOpacity
-                style={styles.scanbutton}
-                onPress={() => this.getCameraPermissions("bookId")}
-              >
-                <Text style={styles.scanbuttonText}>Scan</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.textinputContainer, { marginTop: 25 }]}>
-              <TextInput
-                style={styles.textinput}
-                placeholder={"Student Id"}
-                placeholderTextColor={"#FFFFFF"}
-                value={studentId}
-              />
+        
               <TouchableOpacity
                 style={styles.scanbutton}
                 onPress={() => this.getCameraPermissions("studentId")}
               >
                 <Text style={styles.scanbuttonText}>Scan</Text>
               </TouchableOpacity>
-            </View>
-          </View>
-        </ImageBackground>
+           
       </View>
     );
   }
@@ -112,34 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF"
   },
-  bgImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center"
-  },
- 
-  lowerContainer: {
-    flex: 0.5,
-    alignItems: "center"
-  },
-  textinputContainer: {
-    borderWidth: 2,
-    borderRadius: 10,
-    flexDirection: "row",
-    backgroundColor: "#9DFD24",
-    borderColor: "#FFFFFF"
-  },
-  textinput: {
-    width: "57%",
-    height: 50,
-    padding: 10,
-    borderColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 3,
-    fontSize: 18,
-    backgroundColor: "#5653D4",
-    color: "#FFFFFF"
-  },
+  
   scanbutton: {
     width: 100,
     height: 50,
